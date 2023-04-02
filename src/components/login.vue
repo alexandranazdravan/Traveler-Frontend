@@ -1,16 +1,8 @@
 <template>
-  <v-dialog
-    v-model="errorDialog"
-    max-width="300px"
-    style="
-      background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-    "
-  >
+  <v-dialog v-model="errorDialog" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
-      <v-card-text>
-        Username, Password and User's Email cannot be empty!
-      </v-card-text>
+      <v-card-text> Username and Password cannot be empty! </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="showErrorDialog()">OK</v-btn>
@@ -19,7 +11,7 @@
   </v-dialog>
 
   <div
-    class="d-flex align-center justify-center"
+    class="login-page d-flex align-center justify-center"
     style="
       background-position: center;
       background-size: contain;
@@ -29,13 +21,7 @@
       background-color: #368790;
     "
   >
-    <v-dialog
-      v-model="show"
-      max-width="300px"
-      style="
-        background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-      "
-    >
+    <v-dialog v-model="show" max-width="300px">
       <template v-slot:activator="{ on }"> </template>
       <v-card>
         <v-card-text> Invalid credentials </v-card-text>
@@ -60,6 +46,7 @@
           <v-text-field
             v-model="username"
             label="Username"
+            :rules="[requiredU]"
             style="width: 100%"
           ></v-text-field>
         </div>
@@ -69,6 +56,7 @@
               v-model="password"
               label="Password"
               :type="show ? 'text' : 'password'"
+              :rules="[requiredP]"
               style="width: 100%"
             ></v-text-field>
             <v-icon
@@ -105,29 +93,29 @@
         </p>
       </div>
     </v-sheet>
+    <v-card>
+      <v-layout>
+        <v-navigation-drawer
+          expand-on-hover
+          rail
+          :style="{ backgroundColor: '#f3f9e3ff' }"
+        >
+          <v-list density="compact" nav>
+            <v-list-item
+              link
+              to="/"
+              prepend-icon="mdi-home"
+              title="Home page"
+              value="home"
+            ></v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </v-layout>
+    </v-card>
   </div>
-  <v-card>
-    <v-layout>
-      <v-navigation-drawer
-        expand-on-hover
-        rail
-        :style="{ backgroundColor: '#f3f9e3ff' }"
-      >
-        <v-list density="compact" nav>
-          <v-list-item
-            link
-            to="/admin"
-            prepend-icon="mdi-shield-account"
-            title="Admin page"
-            value="admin"
-          ></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-    </v-layout>
-  </v-card>
 </template>
 <style>
-div {
+.login-page {
   background-image: url("../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png");
 }
 </style>
@@ -142,6 +130,8 @@ export default {
       show: false,
       errorMessage: "",
       errorDialog: false,
+      requiredU: (value) => !!value || "This field is required",
+      requiredP: (value) => !!value || "This field is required",
     };
   },
   methods: {

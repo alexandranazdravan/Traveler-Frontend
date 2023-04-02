@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex align-center justify-center"
+    class="register-page d-flex align-center justify-center"
     style="
       background-position: center;
       background-size: contain;
@@ -24,6 +24,7 @@
           <v-text-field
             v-model="username"
             label="Username *"
+            :rules="[requiredU]"
             style="width: 100%"
           ></v-text-field>
         </div>
@@ -38,6 +39,7 @@
           <v-text-field
             v-model="email"
             label="Email *"
+            :rules="[requiredE]"
             style="width: 100%"
           ></v-text-field>
         </div>
@@ -46,6 +48,7 @@
             <v-text-field
               v-model="password"
               label="Password *"
+              :rules="[requiredP]"
               :type="show1 ? 'text' : 'password'"
               style="width: 100%"
             ></v-text-field>
@@ -70,6 +73,7 @@
               v-model="repeatpassword"
               label="Confirm Password *"
               :type="show2 ? 'text' : 'password'"
+              :rules="[requiredC]"
               style="width: 100%"
             ></v-text-field>
             <v-icon
@@ -99,13 +103,7 @@
     </v-sheet>
   </div>
 
-  <v-dialog
-    v-model="errorDialog"
-    max-width="300px"
-    style="
-      background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-    "
-  >
+  <v-dialog v-model="errorDialog" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
       <v-card-text>
@@ -118,13 +116,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog
-    v-model="errorEmail"
-    max-width="300px"
-    style="
-      background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-    "
-  >
+  <v-dialog v-model="errorEmail" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
       <v-card-text> This is not a valid email </v-card-text>
@@ -137,13 +129,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog
-    v-model="errorUsername"
-    max-width="300px"
-    style="
-      background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-    "
-  >
+  <v-dialog v-model="errorUsername" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
       <v-card-text> Username contains illegal characters. </v-card-text>
@@ -156,12 +142,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog
-    v-model="errorPassword"
-    max-width="300px"
-    style="background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');
-    "
-  >
+  <v-dialog v-model="errorPassword" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
       <v-card-text> Passwords must match. </v-card-text>
@@ -174,11 +155,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog
-    v-model="errorRegisterMsg"
-    max-width="300px"
-    style="background-image: url('../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png');"
-  >
+  <v-dialog v-model="errorRegisterMsg" max-width="300px">
     <template v-slot:activator="{ on }"> </template>
     <v-card>
       <v-card-text> {{ errorMsg }} </v-card-text>
@@ -200,10 +177,17 @@
         <v-list density="compact" nav>
           <v-list-item
             link
-            to="/admin"
-            prepend-icon="mdi-shield-account"
-            title="Admin page"
-            value="admin"
+            to="/about"
+            prepend-icon="mdi-home"
+            title="Home page"
+            value="home"
+          ></v-list-item>
+          <v-list-item
+            link
+            to="/login"
+            prepend-icon="mdi-login-variant"
+            title="Go back to Login"
+            value="login"
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -211,7 +195,7 @@
   </v-card>
 </template>
 <style>
-div {
+.register-page {
   background-image: url("../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png");
 }
 </style>
@@ -229,6 +213,10 @@ export default {
       show1: false,
       show2: false,
       errorDialog: false,
+      requiredE: (value) => !!value || "This field is required",
+      requiredU: (value) => !!value || "This field is required",
+      requiredP: (value) => !!value || "This field is required",
+      requiredC: (value) => !!value || "This field is required",
       emailRegex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/,
       usernameRegex: /^[a-zA-Z0-9_.]+$/,
       errorEmail: false,
@@ -303,25 +291,11 @@ export default {
           this.$router.push("/dashboard");
         })
         .catch((error) => {
-            const error_js = JSON.stringify(error.response.data)
-            const error_parse = JSON.parse(error_js)
-            // console.error(error_js);
-            this.errorMsg = error_parse.error
-            console.log(this.errorMsg)
-            this.errorRegisterMsg = true
-            // console.error(error_parse.response);
-            // console.error(error_parse.response.data.error);
-    //         if (error.response) {
-    //   // The request was made and the server responded with a status code
-    //   // that falls out of the range of 2xx
-    //   console.log(error.response.data.message);
-    // } else if (error.request) {
-    //   // The request was made but no response was received
-    //   console.log(error.request);
-    // } else {
-    //   // Something happened in setting up the request that triggered an Error
-    //   console.log('Error', error.message);
-    // }
+          const error_js = JSON.stringify(error.response.data);
+          const error_parse = JSON.parse(error_js);
+          this.errorMsg = error_parse.error;
+          console.log(this.errorMsg);
+          this.errorRegisterMsg = true;
         });
     },
   },

@@ -5,19 +5,24 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-          path: '/',
-          name: 'home',
-          component: () => import('../components/sidemenu.vue'),
-        },
-        {
           path: '/admin',
           name: 'admin',
           component:  () => import('../components/admin.vue')
         },
         {
+          path: '/about',
+          name: 'about',
+          component: () => import('../components/about.vue'),
+        },
+        {
+          path: '/',
+          name: 'home',
+          component: () => import('../components/home.vue'),
+        },
+        {
           path: '/login',
           name: 'login',
-          component:() => import('../components/login.vue')
+          component: () => import('../components/login.vue'),
         },
         {
           path: '/register',
@@ -44,9 +49,7 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  // Check if the user is trying to access the /admin route
   if (to.path === '/admin') {
-    // Check if the user is authenticated
     const cookieValue = document.cookie.match('(^|;)\\s*' + 'loggedin' + '\\s*=\\s*([^;]+)');
     const cookie = cookieValue ? cookieValue.pop() : '';
     const isAuthenticated = cookie === "" ? false : true; 
@@ -65,7 +68,7 @@ router.beforeEach((to, from, next) => {
           router.push('/login');
         }
         else {
-          next(); // User is authenticated, allow access to the /admin route
+          next();
         }
       })
       .catch(error => {
@@ -73,7 +76,6 @@ router.beforeEach((to, from, next) => {
       });
     } 
     else {
-      // User is not authenticated, redirect to login page
       router.push('/login');
     }
   } 
@@ -86,7 +88,7 @@ router.beforeEach((to, from, next) => {
       router.push('/dashboard');
     } 
     else {
-      next(); // User is not authenticated, allow access to the /login route
+      next();
     }
   } 
   else if (to.path === '/dashboard') {
@@ -95,12 +97,13 @@ router.beforeEach((to, from, next) => {
     const isAuthenticated = cookie === "" ? false : true; 
 
     if (isAuthenticated) {
-      next(); // User is authenticated, allow access to the /dashboard route
+      next();
     } 
     else {
       router.push('/login');
     }
   }
+  next()
 });
 
 export default router
