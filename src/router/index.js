@@ -44,6 +44,11 @@ const router = createRouter({
           name: 'resetpass',
           component:() => import('../components/resetpass.vue')
         },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import('../components/userprofile.vue'),
+        },
       ]
 })
 

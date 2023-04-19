@@ -1,4 +1,5 @@
 <template>
+  <div class="admin-page">
   <v-card>
     <v-layout flat>
       <v-top-navigation v-model="value" mode="shift">
@@ -86,6 +87,12 @@
                     <v-text-field
                       v-model="editedItem.user_email"
                       label="User's email"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-text-field
+                      v-model="editedItem.user_avatar"
+                      label="User's avatar"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -284,10 +291,11 @@
       </v-top-navigation>
     </v-layout>
   </v-card>
+</div>
 </template>
 
 <style>
-body[shouldHaveBackground="true"] {
+.admin-page {
   background-image: url("../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png");
   background-position: center;
   background-size: contain;
@@ -309,7 +317,6 @@ export default {
       errorDialog: false,
       errorEmail: false,
       errorUsername: false,
-      shouldHaveBackground: true,
       emailRegex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/,
       usernameRegex: /^[a-zA-Z0-9_.]+$/,
       newId: 0,
@@ -340,6 +347,7 @@ export default {
         { title: "User's Fullname", key: "user_fullname" },
         { title: "Username", key: "user_name" },
         { title: "User's email", key: "user_email" },
+        { title: "User's avatar", key: "user_avatar" },
         {
           title: "Actions",
           key: "actions",
@@ -476,6 +484,9 @@ export default {
         user_email: json_parse_item["user_email"]
           ? json_parse_item["user_email"]
           : json_parse_item["columns"]["user_email"],
+          user_avatar: json_parse_item["user_avatar"]
+          ? json_parse_item["user_avatar"]
+          : json_parse_item["columns"]["user_avatar"],
       };
 
       if (
@@ -533,11 +544,7 @@ export default {
       const usersIndex = dataString.indexOf('"users":');
       const usersString = dataString.slice(usersIndex).match(/\[.*\]/)[0];
       const usersArray = JSON.parse(usersString);
-      this.shouldHaveBackground = !this.shouldHaveBackground;
-      document.body.setAttribute(
-        "shouldHaveBackground",
-        this.shouldHaveBackground
-      );
+
       this.showUsers = true;
       this.showAirports = false;
       this.showAirlines = false;
@@ -653,10 +660,7 @@ export default {
           is_lowcost: airline.is_lowcost ? "yes" : "no",
         };
       });
-    },
-    shouldHaveBackground() {
-      this.shouldHaveBackground;
-    },
+    }
   },
 };
 </script>
