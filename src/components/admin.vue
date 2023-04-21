@@ -544,6 +544,7 @@ export default {
       const usersIndex = dataString.indexOf('"users":');
       const usersString = dataString.slice(usersIndex).match(/\[.*\]/)[0];
       const usersArray = JSON.parse(usersString);
+      console.log(typeof(usersArray))
 
       this.showUsers = true;
       this.showAirports = false;
