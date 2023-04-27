@@ -20,48 +20,50 @@
     >
       Find your next flights
     </v-card-text>
-    <!-- <v-select
-    v-model="chosenOption"
-    :items="options"
-    label="Choose an option"
-    single-line
-    style="margin-left: 45vh; margin-right: 45vh; margin-top: -3vh"
-  ></v-select> -->
-
   </v-card>
   <v-img
     src="https://www.perthnow.com.au/stories/perth-misses-out-on-return-to-international-travel/assets/8.gif"
     style="margin-left: 180vh; margin-top: -25vh"
   ></v-img>
-  
-  <v-select
-    v-model="chosenOption"
-    :items="options"
-    label="Choose an option"
-    single-line
-    style="margin-left: 45vh; margin-right: 45vh; margin-top: 3vh"
-  ></v-select>
-  <v-card-title v-if="showCitiesStart">
-            <v-text-field
-              v-model="search"
-              label="Search"
-              single-line
-              hide-details
-              style="margin-left: 19vh; width: 190vh; margin-top: 3vw"
-            ></v-text-field>
-          </v-card-title>
+  <div class="dashboard-page">
+  <v-top-navigation v-model="value" mode="shift" style="margin-left: 11vh">
+    <v-btn @click="getCheapFlights()" style="width: 41vh">
+      <!-- <v-icon>mdi-account-supervisor</v-icon> -->
 
-          <v-data-table
-            v-if="showCitiesStart"
-            :headers="cities_headers"
-            :items="cities"
-            item-key="name"
-            :search="search"
-            @update:options="options = $event"
-            style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh"
-            hide-default-footer
-          >
-          </v-data-table>
+      <span style="font-size: small">Cheap Flights</span>
+    </v-btn>
+
+    <v-btn @click="getDirectFlights()" style="width: 41vh">
+      <!-- <v-icon>mdi-airport</v-icon> -->
+
+      <span style="font-size: small">Direct Flights</span>
+    </v-btn>
+
+    <v-btn @click="getPopularCityDir()" style="width: 41vh">
+      <!-- <v-icon>mdi-airplane</v-icon> -->
+
+      <span style="font-size: small">Popular City Directions</span>
+    </v-btn>
+
+    <v-btn @click="getPricesPerMonth()" style="width: 41vh">
+      <!-- <v-icon>mdi-view-dashboard</v-icon> -->
+
+      <span style="font-size: small">Prices for a Month</span>
+    </v-btn>
+
+    <v-btn @click="getPopularAirlines()" style="width: 41vh">
+      <!-- <v-icon>mdi-city</v-icon> -->
+
+      <span style="font-size: small">Popular Airlines</span>
+    </v-btn>
+  </v-top-navigation>
+
+  <v-img 
+          v-if="showCreated"
+          class="custom-img"
+          :src="image"
+          style="margin-top: 0vh; height: 66.6vh;"
+        ></v-img>
 
   <v-data-table
     v-if="showCityDir"
@@ -72,7 +74,7 @@
     item-key="destination"
     show-expand
     class="elevation-1"
-    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh"
+    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh; margin-top: 5vh; min-height: 66.6vh;"
   >
     <template v-slot:top> </template>
     <template v-slot:expanded-row="{ columns, item }">
@@ -88,10 +90,7 @@
       </tr>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        @click="item.props.title.is_favourite = !item.props.title.is_favourite"
-      >
+      <v-icon small @click="toggleFavourite(item)">
         {{ item.props.title.is_favourite ? "mdi-heart" : "mdi-heart-outline" }}
       </v-icon>
     </template>
@@ -102,11 +101,11 @@
     v-model:expanded="expanded"
     :headers="direct_cheap_headers"
     :items="cheapDirectDetails"
-    item-value="destination"
-    item-key="destination"
+    item-value="departure_at"
+    item-key="departure_at"
     show-expand
     class="elevation-1"
-    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh"
+    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh; margin-top: 5vh;  min-height: 56.6vh;"
   >
     <template v-slot:top> </template>
     <template v-slot:expanded-row="{ columns, item }">
@@ -122,10 +121,37 @@
       </tr>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        @click="item.props.title.is_favourite = !item.props.title.is_favourite"
-      >
+      <v-icon small @click="toggleFavourite(item)">
+        {{ item.props.title.is_favourite ? "mdi-heart" : "mdi-heart-outline" }}
+      </v-icon>
+    </template>
+  </v-data-table>
+
+  <v-data-table
+    v-if="showPricesMonthly"
+    v-model:expanded="expanded"
+    :headers="direct_cheap_headers"
+    :items="perMonthDetails"
+    item-value="departure_at"
+    item-key="departure_at"
+    show-expand
+    class="elevation-1"
+    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh; margin-top: 5vh"
+  >
+    <template v-slot:top> </template>
+    <template v-slot:expanded-row="{ columns, item }">
+      <tr>
+        <td :colspan="columns.length">
+          <div>Distance: {{ item.props.title.distance }}</div>
+          <div>Duration: {{ item.props.title.duration }}</div>
+          <div>Trip Class: {{ item.props.title.class }}</div>
+          <div>Price: {{ item.props.title.price }}</div>
+          <div>Number of changes: {{ item.props.title.no_of_changes }}</div>
+        </td>
+      </tr>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon small @click="toggleFavourite(item)">
         {{ item.props.title.is_favourite ? "mdi-heart" : "mdi-heart-outline" }}
       </v-icon>
     </template>
@@ -138,9 +164,62 @@
     item-value="Destination City"
     item-key="Destination City"
     class="elevation-1"
-    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh"
+    style="margin-left: 20vh; width: 190vh; margin-bottom: 5vh; margin-top: 5vh"
   >
   </v-data-table>
+
+  <v-dialog v-model="showComponentsPerMonth" style="position: center">
+    <v-card
+      style="height: 90vh; width: 120vh; position: center; margin-left: 44vh"
+    >
+      <div style="display: flex">
+        <v-text-field
+          v-model="origin"
+          label="Departure City *"
+          :rules="[requiredO]"
+          style="margin-left: 25vh; margin-right: 25vh; margin-top: 5vh"
+        ></v-text-field>
+      </div>
+      <div style="display: flex">
+        <v-text-field
+          v-model="destination"
+          label="Destination City *"
+          :rules="[requiredD]"
+          style="margin-left: 25vh; margin-right: 25vh; margin-top: 1vh"
+        ></v-text-field>
+      </div>
+      <div style="display: flex">
+        <v-select
+          v-model="chosenCurrency"
+          :hint="`${chosenCurrency.name}, ${chosenCurrency.code}`"
+          :items="currencies"
+          item-title="name"
+          item-value="code"
+          label="Currency"
+          persistent-hint
+          return-object
+          single-line
+          style="margin-left: 25vh; margin-right: 25vh"
+        ></v-select>
+      </div>
+      <div style="display: flex">
+        <v-img
+          class="custom-img"
+          :src="image"
+          style="margin-top: 20vh; margin-left: -40vh; margin-right: 20vh"
+        ></v-img>
+        <v-card-actions style="margin-top: 30vh; margin-right: 5vh">
+          <v-spacer></v-spacer>
+          <v-btn color="#368790" text @click="cancelPricesPerMonth"
+            >Cancel</v-btn
+          >
+          <v-btn color="#368790" text @click="sendReqPricesPerMonth"
+            >Search</v-btn
+          >
+        </v-card-actions>
+      </div>
+    </v-card>
+  </v-dialog>
 
   <v-dialog v-model="showComponentsPricesCheap" style="position: center">
     <v-card
@@ -216,32 +295,6 @@
           :src="image"
           style="margin-top: 20vh; margin-left: -60vh; margin-right: 20vh"
         ></v-img>
-        <!-- <v-btn
-            @click="cancelPricesCheap"
-            :transparent="true"
-            style="
-              width: 20vh;
-              margin-left: 133vh;
-              margin-top: 15vh;
-              height: 9vh;
-              width: 19vh;
-              font-size: medium;
-        "
-            >Cancel</v-btn
-          >
-          <v-btn
-            @click="sendReqPricesCheap"
-            style="
-              width: 20vh;
-              margin-left: 133vh;
-              background-color: #f3f9e3ff;
-              margin-top: 5vh;
-              height: 9vh;
-              width: 19vh;
-              font-size: medium;
-        "
-            >Search</v-btn
-          > -->
         <v-card-actions style="margin-top: 30vh; margin-right: 5vh">
           <v-spacer></v-spacer>
           <v-btn color="#368790" text @click="cancelPricesCheap">Cancel</v-btn>
@@ -268,21 +321,6 @@
             align-items: center;
           "
         >
-          <!-- <v-autocomplete
-        v-model="chosenAirline"
-        :hint="`${chosenAirline.name}, ${chosenAirline.code}`"
-        :items="airlines"
-        item-title="name"
-        item-value="code"
-        label="Airline *"
-        return-object
-        style="max-width: 60vh; margin-top: 6vh; margin-bottom: 5vh;"
-      >                <template v-slot:append-item>
-                  <div v-intersect="loadMoreData" class="pa-4 teal--text">
-                     Loading more items ...
-                  </div>
-                </template></v-autocomplete> -->
-
           <v-select
             v-model="chosenCurrency"
             :hint="`${chosenCurrency.name}, ${chosenCurrency.code}`"
@@ -438,7 +476,7 @@
           ></v-list-item>
           <v-list-item
             link
-            to="/"
+            to="/wishlist"
             prepend-icon="mdi-heart"
             title="Wishlist"
             value="wishlist"
@@ -466,9 +504,19 @@
       </v-navigation-drawer>
     </v-layout>
   </v-card>
+</div>
 </template>
 
 <style>
+.dashboard-page {
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  /* height: 72.8vh; */
+  background: linear-gradient(to bottom, #368790, #E3F5EF);
+}
+
 .dp__theme_light {
   --dp-success-color: #368790;
 }
@@ -489,7 +537,6 @@
 import axios from "axios";
 import myImage from "../assets/logo/airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png";
 import VueDatepicker from "@vuepic/vue-datepicker";
-import { registerRuntimeHelpers } from "@vue/compiler-core";
 
 export default {
   components: {
@@ -498,8 +545,6 @@ export default {
   data() {
     return {
       expanded: [],
-      singleExpand: false,
-      cities: [],
       airlines: [],
       cities_headers: [
         {
@@ -538,22 +583,14 @@ export default {
         { code: "THB", name: "Thai Baht" },
         { code: "VND", name: "Vietnamese Dong" },
       ],
-      chosenCity: "",
       search: "",
       origin: "",
       destination: "",
-      options: [
-        "Cheap Flights",
-        "Direct Flights",
-        "Popular City Directions",
-        "Popular Airlines",
-      ],
-      chosenOption: "",
       chosenAirline: { name: "Blue Air", code: "0B" },
       showComponentsPricesCheap: false,
       showComponentsCityDir: false,
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: "",
+      showComponentsPerMonth: false,
+      showPricesMonthly: false,
       selectedDateDepart: null,
       showCityDir: false,
       showAirlineRoutes: false,
@@ -561,14 +598,9 @@ export default {
       page: 1,
       selectedDateReturn: null,
       dateFormat: "yyyy-MM-dd",
-      menu: false,
       requiredD: (value) => !!value || "This field is required",
       requiredO: (value) => !!value || "This field is required",
-      loading: false,
-      disabled: false,
-      cities: [],
-      items: [],
-      uri: "prices/direct",
+      uri: "v1/prices/direct",
       popular_cities_headers: [
         {
           align: "start",
@@ -633,6 +665,7 @@ export default {
           sortable: false,
         },
       ],
+      perMonthDetails: [],
       errorMessage: "",
       errorDialog: false,
       chosenNoOfRoutes: 10,
@@ -641,12 +674,9 @@ export default {
       airlinesDetails: [],
       showDirectCheap: false,
       cheapDirectDetails: [],
-      showCitiesStart: true,
+      showCreated: true,
+      startDetails: []
     };
-  },
-  created() {
-    this.fetchAirlines(this.page);
-    this.fetchCities();
   },
   methods: {
     logout() {
@@ -668,23 +698,101 @@ export default {
           console.error(error);
         });
     },
-    updateSearchQuery(newValue, oldValue) {
-      this.searchQuery = newValue;
+    getCheapFlights() {
+      this.showComponentsPricesCheap = true;
+      this.showComponentsCityDir = false;
+      this.showComponentsAirRoutes = false;
+      this.showCityDir = false;
+      this.showAirlineRoutes = false;
+      this.showComponentsPerMonth = false;
+      this.showPricesMonthly = false;
+      this.showCreated = true;
+      this.uri = "v1/prices/cheap";
     },
-    formatDate(date) {
-      if (!date) return null;
-
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+    getDirectFlights() {
+      this.showComponentsPricesCheap = true;
+      this.showComponentsCityDir = false;
+      this.showComponentsAirRoutes = false;
+      this.showCityDir = false;
+      this.showAirlineRoutes = false;
+      this.showComponentsPerMonth = false;
+      this.showPricesMonthly = false;
+      this.showCreated = true;
+      this.uri = "v1/prices/direct";
     },
-    parseDate(date) {
-      if (!date) return null;
-
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    getPopularAirlines() {
+      this.showComponentsAirRoutes = true;
+      this.showComponentsPricesCheap = false;
+      this.showComponentsCityDir = false;
+      this.showCityDir = false;
+      this.showDirectCheap = false;
+      this.showComponentsPerMonth = false;
+      this.showPricesMonthly = false;
+      this.showCreated = true;
+    },
+    getPopularCityDir() {
+      this.showComponentsCityDir = true;
+      this.showComponentsPricesCheap = false;
+      this.showComponentsAirRoutes = false;
+      this.showAirlineRoutes = false;
+      this.showDirectCheap = false;
+      this.showComponentsPerMonth = false;
+      this.showPricesMonthly = false;
+      this.showCreated = true;
+    },
+    getPricesPerMonth() {
+      this.showComponentsCityDir = false;
+      this.showComponentsPricesCheap = false;
+      this.showComponentsAirRoutes = false;
+      this.showAirlineRoutes = false;
+      this.showDirectCheap = false;
+      this.showComponentsPerMonth = true;
+      this.showPricesMonthly = false;
+      this.showCreated = true;
+    },
+    cancelPricesPerMonth() {
+      this.showComponentsPerMonth = false;
+      this.showCreated = true;
     },
     cancelPricesCheap() {
       this.showComponentsPricesCheap = false;
+      this.showCreated = true;
+    },
+    sendReqPricesPerMonth() {
+      axios
+        .post(
+          "http://localhost:80/Traveler/dashboard",
+          {
+            uri: "v2/prices/month-matrix",
+            currency: this.chosenCurrency["code"],
+            origin: this.origin,
+            destination: this.destination,
+          },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          this.showCreated = false;
+          this.showComponentsPerMonth = false;
+          console.log("\n\n\n");
+          this.chosenCurrency = { code: "RON", name: "Romanian Leu" };
+          this.origin = "";
+          this.destination = "";
+          this.perMonthDetails = JSON.parse(JSON.stringify(response.data));
+          console.log(this.perMonthDetails);
+          console.log("\n\n\n");
+          this.showPricesMonthly = true;
+        })
+        .catch((error) => {
+          const error_js = JSON.stringify(error.response.data);
+          const error_parse = JSON.parse(error_js);
+          this.errorMessage = error_parse.error;
+          this.errorDialog = true;
+        });
     },
     sendReqPricesCheap() {
       axios
@@ -706,6 +814,7 @@ export default {
           }
         )
         .then((response) => {
+          this.showCreated = false;
           this.showComponentsPricesCheap = false;
           this.chosenCurrency = { code: "RON", name: "Romanian Leu" };
           this.origin = "";
@@ -713,7 +822,6 @@ export default {
           this.selectedDateDepart = null;
           this.selectedDateReturn = null;
           this.cheapDirectDetails = JSON.parse(JSON.stringify(response.data));
-          console.log(this.cheapDirectDetails);
           this.showDirectCheap = true;
         })
         .catch((error) => {
@@ -725,13 +833,14 @@ export default {
     },
     cancelCity() {
       this.showComponentsCityDir = false;
+      this.showCreated = true;
     },
     sendReqCity() {
       axios
         .post(
           "http://localhost:80/Traveler/dashboard",
           {
-            uri: "city-directions",
+            uri: "v1/city-directions",
             currency: this.chosenCurrency["code"],
             origin: this.origin,
           },
@@ -743,6 +852,7 @@ export default {
           }
         )
         .then((response) => {
+          this.showCreated = false;
           this.showComponentsCityDir = false;
           this.chosenCurrency = { code: "RON", name: "Romanian Leu" };
           this.origin = "";
@@ -761,15 +871,14 @@ export default {
     },
     cancelAirline() {
       this.showComponentsAirRoutes = false;
+      this.showCreated = true;
     },
     sendReqAirline() {
-      console.log(this.chosenAirline.code);
-      console.log(this.chosenNoOfRoutes);
       axios
         .post(
           "http://localhost:80/Traveler/dashboard",
           {
-            uri: "airline-directions",
+            uri: "v1/airline-directions",
             airline_code: this.chosenAirline.code,
             limit: this.chosenNoOfRoutes,
           },
@@ -781,6 +890,7 @@ export default {
           }
         )
         .then((response) => {
+          this.showCreated = false;
           this.showComponentsAirRoutes = false;
           this.chosenAirline = { name: "Blue Air", code: "0B" };
           this.chosenNoOfRoutes = 10;
@@ -794,47 +904,6 @@ export default {
           this.errorDialog = true;
         });
     },
-    async fetchCities() {
-        try {
-          const response = await fetch('/city_codes.json') // Replace with your own file path
-          const data = await response.json()
-          this.cities = data
-        } catch (error) {
-          console.error(error)
-        }
-      },
-    // async fetchAirlines() {
-    //   try {
-    //     const response = await fetch('/airlines.json')
-    //     const data = await response.json()
-    //     // Map the JSON data to a new array with only the required fields
-    //     const modifiedData = data.map((item) => ({
-    //       name: item.name,
-    //       code: item.code,
-    //       is_lowcost: item.is_lowcost,
-    //     }))
-    //     this.airlines = modifiedData
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    //   },
-    async fetchAirlines(page) {
-      try {
-        const response = await axios.get(
-          `http://localhost:80/Traveler/dashboard?item=airline&page=${page}&pageSize=10`
-        );
-        const json_item = JSON.stringify(response.data);
-        const json_item_parse = JSON.parse(json_item);
-        const uniqueItems = json_item_parse.filter(
-          (item, index, self) =>
-            index ===
-            self.findIndex((t) => t.code === item.code && t.name === item.name)
-        );
-        this.airlines = [...this.airlines, ...uniqueItems];
-      } catch (error) {
-        // this.errorRegisterMsg = true;
-      }
-    },
     async loadMoreData() {
       const lastIndex = this.airlines.length - 1;
       const lastItem = this.airlines[lastIndex];
@@ -847,59 +916,89 @@ export default {
       );
       const data = await response.json();
 
-      // Filter out already existing airlines
       const newData = data.filter(
         (item) => !this.airlines.find((existing) => existing.code === item.code)
       );
       this.airlines = this.airlines.concat(newData);
       this.page++;
     },
-  },
-  computed: {
-    computedDateFormatted() {
-      return this.formatDate(this.date);
-    },
-  },
-  watch: {
-    chosenOption(newValue) {
-      if (newValue === "Direct Flights" || newValue === "Cheap Flights") {
-        this.showComponentsPricesCheap = true;
-        this.showComponentsCityDir = false;
-        this.showComponentsAirRoutes = false;
-        this.showCityDir = false;
-        this.showAirlineRoutes = false;
-        if (newValue == "Direct Flights") {
-          this.uri = "prices/direct";
-        } else {
-          this.uri = "prices/cheap";
-        }
-      } else if (newValue === "Popular City Directions") {
-        this.showComponentsCityDir = true;
-        this.showComponentsPricesCheap = false;
-        this.showComponentsAirRoutes = false;
-        this.showAirlineRoutes = false;
-        this.showDirectCheap = false;
-      } else if (newValue == "Popular Airlines") {
-        this.showComponentsAirRoutes = true;
-        this.showComponentsPricesCheap = false;
-        this.showComponentsCityDir = false;
-        this.showCityDir = false;
-        this.showDirectCheap = false;
+    toggleFavourite(item) {
+      if (item.props.title.is_favourite) {
+        this.removeFromWishlist(item);
       } else {
-        this.showComponentsPricesCheap = false;
-        this.showComponentsCityDir = false;
-        this.showComponentsAirRoutes = false;
-        this.showCityDir = false;
-        this.showDirectCheap = false;
-        this.showAirlineRoutes = false;
-        this.fetchCities()
-        // this.chosenOption = true;
+        this.addToWishlist(item);
       }
+      item.props.title.is_favourite = !item.props.title.is_favourite;
+    },
+    addToWishlist(item) {
+      const cookieValue = document.cookie.match(
+        "(^|;)\\s*" + "loggedin" + "\\s*=\\s*([^;]+)"
+      );
+      const cookie = cookieValue ? cookieValue.pop() : "";
+      axios
+        .post(
+          "http://localhost:80/Traveler/wishlist",
+          {
+            cookie: cookie,
+            flight: item.props.title,
+          },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {})
+        .catch((error) => {});
+    },
+    removeFromWishlist(item) {
+      const cookieValue = document.cookie.match(
+        "(^|;)\\s*" + "loggedin" + "\\s*=\\s*([^;]+)"
+      );
+      const cookie = cookieValue ? cookieValue.pop() : "";
+      axios
+        .delete("http://localhost:80/Traveler/wishlist", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          data: {
+            cookie: cookie,
+            flight: item.props.title,
+          },
+        })
+        .then((response) => {})
+        .catch((error) => {});
     },
   },
-
-  mounted() {
-      this.fetchCities() // Call the fetchCities function when the component is mounted
-    },
+  created() {
+    // axios
+    //     .post(
+    //       "http://localhost:80/Traveler/dashboard",
+    //       {
+    //         uri: "v2/prices/special-offers",
+    //       },
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/x-www-form-urlencoded",
+    //           Accept: "application/json",
+    //         },
+    //       }
+    //     )
+    //     .then((response) => {
+    //       console.log("\n\n\n");
+    //       this.startDetails = JSON.parse(JSON.stringify(response.data));
+    //       console.log(this.startDetails);
+    //       console.log("\n\n\n");
+    //       this.showCreatedTable
+    //     })
+    //     .catch((error) => {
+    //       const error_js = JSON.stringify(error.response.data);
+    //       const error_parse = JSON.parse(error_js);
+    //       this.errorMessage = error_parse.error;
+    //       this.errorDialog = true;
+    //     });
+  }
 };
 </script>

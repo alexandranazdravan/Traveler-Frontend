@@ -49,6 +49,11 @@ const router = createRouter({
           name: 'profile',
           component: () => import('../components/userprofile.vue'),
         },
+        {
+          path: '/wishlist',
+          name: 'wishlist',
+          component: () => import('../components/wishlist.vue'),
+        },
       ]
 })
 
