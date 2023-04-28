@@ -17,9 +17,9 @@
   <a href="#license">License</a>
 </p>
 
-<div style="text-align: center;">
-  <img src="src\assets\app_ss\dashboard.png" width="800" style="display: block; margin: auto;">
-</div>
+<p align="center">
+  <img src="src\assets\app_ss\dashboard.png" width="800">
+</p>
 
 ## Key Features
 
