@@ -1,297 +1,320 @@
 <template>
   <div class="admin-page">
-  <v-card>
-    <v-layout flat>
-      <v-top-navigation v-model="value" mode="shift">
-        <v-btn @click="makeRequest()">
-          <v-icon>mdi-account-supervisor</v-icon>
+    <v-card>
+      <v-layout flat>
+        <v-top-navigation v-model="value" mode="shift">
+          <v-btn @click="makeRequest()">
+            <v-icon>mdi-account-supervisor</v-icon>
 
-          <span>Manage Users</span>
-        </v-btn>
+            <span>Manage Users</span>
+          </v-btn>
 
-        <v-btn @click="getAirports()">
-          <v-icon>mdi-airport</v-icon>
+          <v-btn @click="getAirports()">
+            <v-icon>mdi-airport</v-icon>
 
-          <span>Airports</span>
-        </v-btn>
+            <span>Airports</span>
+          </v-btn>
 
-        <v-btn @click="getAirlines()">
-          <v-icon>mdi-airplane</v-icon>
+          <v-btn @click="getAirlines()">
+            <v-icon>mdi-airplane</v-icon>
 
-          <span>Airlines</span>
-        </v-btn>
+            <span>Airlines</span>
+          </v-btn>
 
-        <v-btn @click="getCities()">
-          <v-icon>mdi-city</v-icon>
+          <v-btn @click="getCities()">
+            <v-icon>mdi-city</v-icon>
 
-          <span>Cities</span>
-        </v-btn>
+            <span>Cities</span>
+          </v-btn>
 
-        <v-btn @click="dahsboard()">
-          <v-icon>mdi-view-dashboard</v-icon>
+          <v-btn @click="dahsboard()">
+            <v-icon>mdi-view-dashboard</v-icon>
 
-          <span>Dashboard</span>
-        </v-btn>
+            <span>Dashboard</span>
+          </v-btn>
 
-        <v-btn @click="logout()">
-          <v-icon>mdi-logout</v-icon>
+          <v-btn @click="logout()">
+            <v-icon>mdi-logout</v-icon>
 
-          <span>Logout</span>
-        </v-btn>
+            <span>Logout</span>
+          </v-btn>
 
-        <div class="content-wrapper">
-          <v-card-title v-if="showUsers">
-            <v-text-field
-              v-model="search"
-              label="Search"
-              single-line
-              hide-details
-              append-inner-icon="mdi-magnify"
-              style="margin-left: -1vw; margin-top: 3vw"
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            v-if="showUsers"
-            v-model:page="page"
-            :headers="users_headers"
-            :items="users"
-            item-key="user_name"
-            :search="search"
-            :items-per-page="itemsPerPage"
-            @update:options="options = $event"
-            hide-default-footer
-            style="width: 100vw"
-            ><template v-slot:item.actions="{ item }">
-              <v-icon small @click="editUser(item)">mdi-pencil</v-icon>
-              <v-icon small @click="deleteUser(item)">mdi-delete</v-icon>
-            </template>
-          </v-data-table>
+          <div class="content-wrapper">
+            <v-card-title v-if="showUsers">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                single-line
+                hide-details
+                append-inner-icon="mdi-magnify"
+                style="margin-left: -1vw; margin-top: 3vw"
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              v-if="showUsers"
+              v-model:page="page"
+              :headers="users_headers"
+              :items="users"
+              item-key="user_name"
+              :search="search"
+              :items-per-page="itemsPerPage"
+              @update:options="options = $event"
+              hide-default-footer
+              style="width: 100vw"
+              ><template v-slot:item.actions="{ item }">
+                <v-icon small @click="editUser(item)">mdi-pencil</v-icon>
+                <v-icon small @click="deleteUser(item)">mdi-delete</v-icon>
+              </template>
+            </v-data-table>
 
-          <v-dialog v-model="dialog" max-width="500px" v-if="showUsers">
-            <v-card>
-              <v-card-text>
-                <v-row>
-                  <v-col cols="12" sm="4">
-                    <v-text-field
-                      v-model="editedItem.user_name"
-                      label="Username"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="8">
-                    <v-text-field
-                      v-model="editedItem.user_fullname"
-                      label="User's Fullname"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.user_email"
-                      label="User's email"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.user_avatar"
-                      label="User's avatar"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="showEditDialog()"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="saveItem(editedItem)"
-                  >Save</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-dialog v-model="dialog" max-width="500px" v-if="showUsers">
+              <v-card>
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="12" sm="4">
+                      <v-text-field
+                        v-model="editedItem.user_name"
+                        label="Username"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="8">
+                      <v-text-field
+                        v-model="editedItem.user_fullname"
+                        label="User's Fullname"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.user_email"
+                        label="User's email"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.user_avatar"
+                        label="User's avatar"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="showEditDialog()"
+                    >Cancel</v-btn
+                  >
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="saveItem(editedItem)"
+                    >Save</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-          <v-dialog v-model="dialogAdd" max-width="500px" v-if="showUsers">
-            <template v-slot:activator="{ on }">
-              <div class="d-flex">
-                <v-btn
-                  color="primary"
-                  dark
-                  class="ml-auto ma-3"
-                  v-on="on"
-                  style="background-color: #6ab547ff !important"
-                  @click="showAddDialog(item)"
-                >
-                  New user
-                  <v-icon small>mdi-plus-circle-outline</v-icon>
-                </v-btn>
-              </div>
-            </template>
-            <v-card>
-              <v-card-text>
-                <v-row>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.user_name"
-                      label="Username"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.user_fullname"
-                      label="User's Fullname"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.user_email"
-                      label="User's email"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="newPass"
-                      label="User's password"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="showAddDialog()"
-                  >Cancel</v-btn
-                >
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="saveAddItem(editedItem)"
-                  >Save</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-dialog v-model="dialogAdd" max-width="500px" v-if="showUsers">
+              <template v-slot:activator="{ on }">
+                <div class="d-flex">
+                  <v-btn
+                    color="primary"
+                    dark
+                    class="ml-auto ma-3"
+                    v-on="on"
+                    style="background-color: #6ab547ff !important"
+                    @click="showAddDialog(item)"
+                  >
+                    New user
+                    <v-icon small>mdi-plus-circle-outline</v-icon>
+                  </v-btn>
+                </div>
+              </template>
+              <v-card>
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.user_name"
+                        label="Username"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.user_fullname"
+                        label="User's Fullname"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.user_email"
+                        label="User's email"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="newPass"
+                        label="User's password"
+                        :type="show1 ? 'text' : 'password'"
+                        style="width: 100%"
+                      ></v-text-field>
+                      <v-icon
+                        :class="show1 ? 'text-primary' : ''"
+                        @click="show1 = !show1"
+                        style="
+                          position: absolute;
+                          right: 35px;
+                          top: 76%;
+                          transform: translateY(-50%);
+                          cursor: pointer;
+                        "
+                        >{{ show1 ? "mdi-eye" : "mdi-eye-off" }}</v-icon
+                      >
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="showAddDialog()"
+                    >Cancel</v-btn
+                  >
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="saveAddItem(editedItem)"
+                    >Save</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-          <v-dialog v-model="errorDialog" max-width="300px" v-if="showUsers">
-            <template v-slot:activator="{ on }"> </template>
-            <v-card>
-              <v-card-text>
-                Username, Password and User's Email cannot be empty!
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="showErrorDialog()"
-                  >OK</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-dialog v-model="errorDialog" max-width="300px" v-if="showUsers">
+              <template v-slot:activator="{ on }"> </template>
+              <v-card>
+                <v-card-text>
+                  Username, Password and User's Email cannot be empty!
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="showErrorDialog()"
+                    >OK</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-          <v-dialog v-model="errorEmail" max-width="300px" v-if="showUsers">
-            <template v-slot:activator="{ on }"> </template>
-            <v-card>
-              <v-card-text> This is not a valid email </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="showErrorEmailDialog()"
-                  >OK</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-dialog v-model="errorEmail" max-width="300px" v-if="showUsers">
+              <template v-slot:activator="{ on }"> </template>
+              <v-card>
+                <v-card-text> This is not a valid email </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="showErrorEmailDialog()"
+                    >OK</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-          <v-dialog v-model="errorUsername" max-width="300px" v-if="showUsers">
-            <template v-slot:activator="{ on }"> </template>
-            <v-card>
-              <v-card-text> Username contains illegal characters. </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="showErrorUsernameDialog()"
-                  >OK</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-dialog
+              v-model="errorUsername"
+              max-width="300px"
+              v-if="showUsers"
+            >
+              <template v-slot:activator="{ on }"> </template>
+              <v-card>
+                <v-card-text>
+                  Username contains illegal characters.
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="showErrorUsernameDialog()"
+                    >OK</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-          <v-card-title v-if="showAirports">
-            <v-text-field
-              v-model="search"
-              label="Search"
-              single-line
-              hide-details
-              style="margin-left: -1vw; margin-top: 3vw"
-            ></v-text-field>
-          </v-card-title>
+            <v-card-title v-if="showAirports">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                single-line
+                hide-details
+                style="margin-left: -1vw; margin-top: 3vw"
+              ></v-text-field>
+            </v-card-title>
 
-          <v-data-table
-            v-if="showAirports"
-            v-model:page="page"
-            :headers="airports_headers"
-            :items="airports"
-            item-key="name"
-            :search="search"
-            :items-per-page="itemsPerPage"
-            @update:options="options = $event"
-            style="width: 100vw"
-            hide-default-footer
-          >
-          </v-data-table>
+            <v-data-table
+              v-if="showAirports"
+              v-model:page="page"
+              :headers="airports_headers"
+              :items="airports"
+              item-key="name"
+              :search="search"
+              :items-per-page="itemsPerPage"
+              @update:options="options = $event"
+              style="width: 100vw"
+              hide-default-footer
+            >
+            </v-data-table>
 
-          <v-card-title v-if="showAirlines">
-            <v-text-field
-              v-model="search"
-              label="Search"
-              single-line
-              hide-details
-              style="margin-left: -1vw; margin-top: 3vw"
-            ></v-text-field>
-          </v-card-title>
+            <v-card-title v-if="showAirlines">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                single-line
+                hide-details
+                style="margin-left: -1vw; margin-top: 3vw"
+              ></v-text-field>
+            </v-card-title>
 
-          <v-data-table
-            v-if="showAirlines"
-            v-model:page="page"
-            :headers="airlines_headers"
-            :items="mappedAirlines"
-            item-key="name"
-            :search="search"
-            :items-per-page="itemsPerPage"
-            @update:options="options = $event"
-            hide-default-footer
-            style="width: 100vw"
-          >
-          </v-data-table>
+            <v-data-table
+              v-if="showAirlines"
+              v-model:page="page"
+              :headers="airlines_headers"
+              :items="mappedAirlines"
+              item-key="name"
+              :search="search"
+              :items-per-page="itemsPerPage"
+              @update:options="options = $event"
+              hide-default-footer
+              style="width: 100vw"
+            >
+            </v-data-table>
 
-          <v-card-title v-if="showCities">
-            <v-text-field
-              v-model="search"
-              label="Search"
-              single-line
-              hide-details
-              style="margin-left: -1vw; margin-top: 3vw"
-            ></v-text-field>
-          </v-card-title>
+            <v-card-title v-if="showCities">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                single-line
+                hide-details
+                style="margin-left: -1vw; margin-top: 3vw"
+              ></v-text-field>
+            </v-card-title>
 
-          <v-data-table
-            v-if="showCities"
-            v-model:page="page"
-            :headers="cities_headers"
-            :items="cities"
-            item-key="code"
-            :search="search"
-            :items-per-page="itemsPerPage"
-            @update:options="options = $event"
-            hide-default-footer
-            style="width: 100vw"
-          >
-          </v-data-table>
-        </div>
-      </v-top-navigation>
-    </v-layout>
-  </v-card>
-</div>
+            <v-data-table
+              v-if="showCities"
+              v-model:page="page"
+              :headers="cities_headers"
+              :items="cities"
+              item-key="code"
+              :search="search"
+              :items-per-page="itemsPerPage"
+              @update:options="options = $event"
+              hide-default-footer
+              style="width: 100vw"
+            >
+            </v-data-table>
+          </div>
+        </v-top-navigation>
+      </v-layout>
+    </v-card>
+  </div>
 </template>
 
 <style>
@@ -312,6 +335,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      show1: false,
       dialog: false,
       dialogAdd: false,
       errorDialog: false,
@@ -399,12 +423,10 @@ export default {
     },
     showEditDialog(item) {
       this.editedItem = item || {};
-      console.log(this.item);
       this.dialog = !this.dialog;
     },
     showAddDialog(item) {
       this.editedItem = item || {};
-      console.log(this.item);
       this.dialogAdd = !this.dialogAdd;
     },
     saveAddItem(item) {
@@ -466,7 +488,6 @@ export default {
     saveItem(item) {
       const json_item = JSON.stringify(this.editedItem);
       var json_parse_item = JSON.parse(json_item);
-      console.log(json_item);
 
       const cookieValue = document.cookie.match(
         "(^|;)\\s*" + "loggedin" + "\\s*=\\s*([^;]+)"
@@ -484,7 +505,7 @@ export default {
         user_email: json_parse_item["user_email"]
           ? json_parse_item["user_email"]
           : json_parse_item["columns"]["user_email"],
-          user_avatar: json_parse_item["user_avatar"]
+        user_avatar: json_parse_item["user_avatar"]
           ? json_parse_item["user_avatar"]
           : json_parse_item["columns"]["user_avatar"],
       };
@@ -544,7 +565,6 @@ export default {
       const usersIndex = dataString.indexOf('"users":');
       const usersString = dataString.slice(usersIndex).match(/\[.*\]/)[0];
       const usersArray = JSON.parse(usersString);
-      console.log(typeof(usersArray))
 
       this.showUsers = true;
       this.showAirports = false;
@@ -661,7 +681,7 @@ export default {
           is_lowcost: airline.is_lowcost ? "yes" : "no",
         };
       });
-    }
+    },
   },
 };
 </script>

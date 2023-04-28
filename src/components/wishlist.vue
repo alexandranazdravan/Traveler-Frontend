@@ -103,7 +103,7 @@
                 font-size: xx-small;
                 background-color: #324b4e;
                 color: antiquewhite;
-              "
+            "
             >
               Logout
             </v-btn>
@@ -180,6 +180,24 @@ export default {
         })
         .catch((error) => {});
     },
+    logout() {
+      axios
+        .get("http://localhost:80/Traveler/logout", {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          document.cookie =
+            "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          this.$router.push("/login");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
   },
   created() {
     axios
@@ -197,7 +215,6 @@ export default {
       )
       .then((response) => {
         this.details = response.data;
-        console.log(this.details);
       })
       .catch((error) => {
         const error_js = JSON.stringify(error.response.data);

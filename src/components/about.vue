@@ -75,8 +75,6 @@
 <style>
 .about-page {
   background-color: #368790;
-  /* background-color: #f3f9e3ff; */
-
   background-position: center;
   height: 100vh;
   padding-top: 15vh;
@@ -97,6 +95,5 @@ export default {
       image: myImage,
     };
   },
-  //
 };
 </script>

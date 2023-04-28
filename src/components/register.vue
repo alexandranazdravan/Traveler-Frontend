@@ -177,7 +177,7 @@
         <v-list density="compact" nav>
           <v-list-item
             link
-            to="/about"
+            to="/"
             prepend-icon="mdi-home"
             title="Home page"
             value="home"
@@ -253,7 +253,6 @@ export default {
         return;
       }
 
-      console.log(this.username);
       if (!this.emailRegex.test(this.email)) {
         this.errorEmail = true;
         return;
@@ -294,7 +293,6 @@ export default {
           const error_js = JSON.stringify(error.response.data);
           const error_parse = JSON.parse(error_js);
           this.errorMsg = error_parse.error;
-          console.log(this.errorMsg);
           this.errorRegisterMsg = true;
         });
     },

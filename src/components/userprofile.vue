@@ -348,7 +348,6 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response.data);
         this.form.userName = response.data["username"];
         this.form.userEmail = response.data["email"];
         this.form.fullName = response.data["fullname"];

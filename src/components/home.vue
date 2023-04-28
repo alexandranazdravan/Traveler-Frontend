@@ -202,7 +202,6 @@ export default {
     saveDraft() {
       const json_item = JSON.stringify(this.composeMessage);
       var json_parse_item = JSON.parse(json_item);
-      console.log(json_parse_item);
 
       axios
         .post("http://localhost:80/Traveler/contact", json_parse_item, {

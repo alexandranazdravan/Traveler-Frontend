@@ -28,31 +28,26 @@
   <div class="dashboard-page">
   <v-top-navigation v-model="value" mode="shift" style="margin-left: 11vh">
     <v-btn @click="getCheapFlights()" style="width: 41vh">
-      <!-- <v-icon>mdi-account-supervisor</v-icon> -->
 
       <span style="font-size: small">Cheap Flights</span>
     </v-btn>
 
     <v-btn @click="getDirectFlights()" style="width: 41vh">
-      <!-- <v-icon>mdi-airport</v-icon> -->
 
       <span style="font-size: small">Direct Flights</span>
     </v-btn>
 
     <v-btn @click="getPopularCityDir()" style="width: 41vh">
-      <!-- <v-icon>mdi-airplane</v-icon> -->
 
       <span style="font-size: small">Popular City Directions</span>
     </v-btn>
 
     <v-btn @click="getPricesPerMonth()" style="width: 41vh">
-      <!-- <v-icon>mdi-view-dashboard</v-icon> -->
 
       <span style="font-size: small">Prices for a Month</span>
     </v-btn>
 
     <v-btn @click="getPopularAirlines()" style="width: 41vh">
-      <!-- <v-icon>mdi-city</v-icon> -->
 
       <span style="font-size: small">Popular Airlines</span>
     </v-btn>
@@ -691,7 +686,6 @@ export default {
         .then((response) => {
           document.cookie =
             "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          console.log("LoggedOut");
           this.$router.push("/login");
         })
         .catch((error) => {
@@ -746,16 +740,25 @@ export default {
       this.showComponentsAirRoutes = false;
       this.showAirlineRoutes = false;
       this.showDirectCheap = false;
+      this.showCityDir = false;
       this.showComponentsPerMonth = true;
       this.showPricesMonthly = false;
       this.showCreated = true;
     },
     cancelPricesPerMonth() {
       this.showComponentsPerMonth = false;
+      this.origin = "";
+      this.destination = "";
+      this.chosenCurrency =  { code: "RON", name: "Romanian Leu" };
       this.showCreated = true;
     },
     cancelPricesCheap() {
       this.showComponentsPricesCheap = false;
+      this.origin = "";
+      this.destination = "";
+      this.chosenCurrency =  { code: "RON", name: "Romanian Leu" };
+      this.selectedDateDepart = null;
+      this.selectedDateReturn = null;
       this.showCreated = true;
     },
     sendReqPricesPerMonth() {
@@ -778,13 +781,10 @@ export default {
         .then((response) => {
           this.showCreated = false;
           this.showComponentsPerMonth = false;
-          console.log("\n\n\n");
           this.chosenCurrency = { code: "RON", name: "Romanian Leu" };
           this.origin = "";
           this.destination = "";
           this.perMonthDetails = JSON.parse(JSON.stringify(response.data));
-          console.log(this.perMonthDetails);
-          console.log("\n\n\n");
           this.showPricesMonthly = true;
         })
         .catch((error) => {
@@ -833,6 +833,8 @@ export default {
     },
     cancelCity() {
       this.showComponentsCityDir = false;
+      this.origin = "";
+      this.chosenCurrency =  { code: "RON", name: "Romanian Leu" };
       this.showCreated = true;
     },
     sendReqCity() {
@@ -871,6 +873,8 @@ export default {
     },
     cancelAirline() {
       this.showComponentsAirRoutes = false;
+      this.chosenAirline = { name: "Blue Air", code: "0B" };
+      this.chosenNoOfRoutes = 10;
       this.showCreated = true;
     },
     sendReqAirline() {
@@ -972,33 +976,5 @@ export default {
         .catch((error) => {});
     },
   },
-  created() {
-    // axios
-    //     .post(
-    //       "http://localhost:80/Traveler/dashboard",
-    //       {
-    //         uri: "v2/prices/special-offers",
-    //       },
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/x-www-form-urlencoded",
-    //           Accept: "application/json",
-    //         },
-    //       }
-    //     )
-    //     .then((response) => {
-    //       console.log("\n\n\n");
-    //       this.startDetails = JSON.parse(JSON.stringify(response.data));
-    //       console.log(this.startDetails);
-    //       console.log("\n\n\n");
-    //       this.showCreatedTable
-    //     })
-    //     .catch((error) => {
-    //       const error_js = JSON.stringify(error.response.data);
-    //       const error_parse = JSON.parse(error_js);
-    //       this.errorMessage = error_parse.error;
-    //       this.errorDialog = true;
-    //     });
-  }
 };
 </script>

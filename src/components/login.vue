@@ -166,7 +166,7 @@ export default {
         .then((response) => {
           document.cookie = `loggedin=${response.data.loggedin}; path=/`;
           const role = response.data["role"];
-          console.log(role);
+
           if (role == "user") {
             this.$router.push("/dashboard");
           }
