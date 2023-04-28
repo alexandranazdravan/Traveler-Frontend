@@ -93,8 +93,7 @@ This software uses the following open source packages:
 
 ## You may also like...
 
-- [Pomolectron](https://github.com/amitmerchant1990/pomolectron) - A pomodoro app
-- [Correo](https://github.com/amitmerchant1990/correo) - A menubar/taskbar Gmail App for Windows and macOS
+- [Traveler -> Backend](https://github.com/alexandranazdravan/Traveler-Frontend.git) - The backend of the app
 
 ## License
 
