@@ -67,6 +67,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 
 ## Search for flights
 <h3 id="cheap-flights">Cheap Flights</h3>
+
 * Options:
   - departure city
   - destination city
@@ -80,7 +81,9 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - price
   - departure day + departure time
   - return day + return time
+  - 
 <h3 id="direct-flights">Direct Flights</h3>
+
 * Options:
   - departure city
   - destination city
