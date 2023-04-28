@@ -1,6 +1,3 @@
-# viteTraveler
- 
-
 <h1 align="center">
   <br>
   <img src="src\assets\logo\airplanes-are-flying-around-the-world-illustration-in-minimal-style-png.png" alt="Traveler" width="200"></a>
@@ -20,27 +17,28 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](src\assets\logo\dashboard.png)
+![screenshot](src\assets\app_ss\dashboard.png)
 
 ## Key Features
 
-* LivePreview - Make changes, See changes
-  - Instantly see what your Markdown documents look like in HTML as you create them.
-* Sync Scrolling
-  - While you type, LivePreview will automatically scroll to the current location you're editing.
-* GitHub Flavored Markdown  
-* Syntax highlighting
-* [KaTeX](https://khan.github.io/KaTeX/) Support
-* Dark/Light mode
-* Toolbar for basic Markdown formatting
-* Supports multiple cursors
-* Save the Markdown preview as PDF
-* Emoji support in preview :tada:
-* App will keep alive in tray for quick usage
-* Full screen mode
-  - Write distraction free.
-* Cross platform
-  - Windows, macOS and Linux ready.
+* Login/Register
+  - These are necessary, without them, a user cannot benefit from the other features of the application
+* Profile
+  - A user can change its password and other data (username, email, fullname), including even their avatar
+* Wishlist
+  - This way, a user can "keep track" of their favourite flights; they can delete a flight if they are not interested in it anymore
+*  <a href="#search-for-flights">Searching for flights</a>
+  - A user can make searches based on preferences:
+	->  Cheap Flights
+	->  Direct Flights
+	->  Popular City Directions
+	->  Prices per Month
+	->  Popular Airlines
+* Admin
+  - This feature is exclusively for app admins. From here, they can view the IATA codes used by the TravelPayouts API and also manage users(edit, delete, update)
+
+
+<h2 id="search-for-flights">Search for flights</h2>
 
 ## How To Use
 
