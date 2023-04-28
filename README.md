@@ -38,7 +38,7 @@
   - This feature is exclusively for app admins. From here, they can view the IATA codes used by the TravelPayouts API and also manage users(edit, delete, update)
 
 
-##Search for flights
+## Search for flights
 
 ## How To Use
 
