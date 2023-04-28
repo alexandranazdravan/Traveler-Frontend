@@ -27,7 +27,7 @@
   - A user can change its password and other data (username, email, fullname), including even their avatar
 * Wishlist
   - This way, a user can "keep track" of their favourite flights; they can delete a flight if they are not interested in it anymore
-*  <a href="#search-for-flights">Searching for flights</a>
+*  [Searching for flights](#search-for-flights)
   - A user can make searches based on preferences:
 	->  Cheap Flights
 	->  Direct Flights
@@ -38,7 +38,7 @@
   - This feature is exclusively for app admins. From here, they can view the IATA codes used by the TravelPayouts API and also manage users(edit, delete, update)
 
 
-<h2 id="search-for-flights">Search for flights</h2>
+##Search for flights
 
 ## How To Use
 
