@@ -36,7 +36,7 @@
 		-  [Prices per Month](#prices-per-month)
 		-  [Popular Airlines](#popular-airlines)
 * Admin
-   - This feature is exclusively for app admins. From here, they can view the IATA codes used by the TravelPayouts API and also manage users(edit, delete, update)
+   - This feature is exclusively for app admins. From here, they can view the [IATA Codes](#iata-codes) used by the TravelPayouts API and also manage users(edit, delete, update)
 
 
 ## How To Use
@@ -57,6 +57,7 @@ $ yarn add vue-router@4
 # Run the app
 $ yarn dev
 ```
+## IATA Codes
 
 ## Search for flights
 <h3 id="cheap-flights">Cheap Flights</h3>
