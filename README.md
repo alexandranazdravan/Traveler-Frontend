@@ -61,6 +61,10 @@ $ yarn dev
 
 ## Search for flights
 <h3 id="cheap-flights">Cheap Flights</h3>
+<h3 id="direct-flights">Direct Flights</h3>
+<h3 id="popular-city-directions">Popular City Directions</h3>
+<h3 id="prices-per-month">Prices per Month</h3>
+<h3 id="popular-airlines">Popular Airlines</h3>
 
 
 ## Related
