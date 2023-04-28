@@ -81,7 +81,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - price
   - departure day + departure time
   - return day + return time
-  - 
+  
 <h3 id="direct-flights">Direct Flights</h3>
 
 * Options:
@@ -90,7 +90,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - departure time
   - return time
   - currency
-  - 
+  
 * Response:
   - airline
   - is it lowcost?
@@ -98,13 +98,13 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - price
   - departure day + departure time
   - return day + return time
-  - 
+  
 <h3 id="popular-city-directions">Popular City Directions</h3>
 
 * Options:
   - departure city
   - currency
-  - 
+  
 * Response:
   - airline
   - is it lowcost?
@@ -112,14 +112,14 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - price
   - departure day + departure time
   - return day + return time
-  - 
+  
 <h3 id="prices-per-month">Prices per Month</h3>
 
 * Options:
   - departure city
   - destination city
   - currency
-  - 
+  
 * Response:
   - class
   - price
@@ -128,13 +128,13 @@ GET https://api.travelpayouts.com/data/en/airlines.json
   - number of changes
   - departure day
   - return day
-  - 
+  
 <h3 id="popular-airlines">Popular Airlines</h3>
 
 * Options:
   - airline
   - limit
-  - 
+  
 * Response:
   - departure city
   - destination city
