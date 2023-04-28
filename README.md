@@ -142,7 +142,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 
 
 ## Related
-  - [Traveler -> Backend](https://github.com/alexandranazdravan/Traveler-Frontend.git) - The backend of the app
+  - [Traveler -> Backend](https://github.com/alexandranazdravan/Traveler-Backend.git) - The backend of the app
 
 
 ## License
