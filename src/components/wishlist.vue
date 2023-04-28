@@ -69,47 +69,98 @@
   </div>
   <v-card>
     <v-layout>
-      <v-navigation-drawer
-        expand-on-hover
-        rail
-        :style="{ backgroundColor: '#6FBDC6' }"
-      >
-        <v-list density="compact" nav>
-          <v-list-item
-            link
-            to="/profile"
-            prepend-icon="mdi-face-man-profile"
-            title="My Profile"
-            value="profile"
-          ></v-list-item>
-          <v-list-item
-            link
-            to="/dashboard"
-            prepend-icon="mdi-view-dashboard"
-            title="Dashboard"
-            value="Dashboard"
-          ></v-list-item>
-          <v-list-item>
-            <v-img class="custom-img" :src="image"></v-img>
-          </v-list-item>
-        </v-list>
+        <v-navigation-drawer
+          v-if="role_user"
+          expand-on-hover
+          rail
+          :style="{ backgroundColor: '#6FBDC6' }"
+        >
+          <v-list density="compact" nav>
+            <v-list-item
+              link
+              to="/profile"
+              prepend-icon="mdi-face-man-profile"
+              title="My Profile"
+              value="profile"
+            ></v-list-item>
+            <v-list-item
+              link
+              to="/dashboard"
+              prepend-icon="mdi-view-dashboard"
+              title="Dashboard"
+              value="dashboard"
+            ></v-list-item>
+            <v-list-item>
+              <v-img class="custom-img" :src="image"></v-img>
+            </v-list-item>
+          </v-list>
 
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-btn
-              @click="logout()"
-              block
-              style="
-                font-size: xx-small;
-                background-color: #324b4e;
-                color: antiquewhite;
-            "
-            >
-              Logout
-            </v-btn>
-          </div>
-        </template>
-      </v-navigation-drawer>
+          <template v-slot:append>
+            <div class="pa-2">
+              <v-btn
+                @click="logout()"
+                block
+                style="
+                  font-size: xx-small;
+                  background-color: #324b4e;
+                  color: antiquewhite;
+                "
+              >
+                Logout
+              </v-btn>
+            </div>
+          </template>
+        </v-navigation-drawer>
+
+        <v-navigation-drawer
+          v-if="role_admin"
+          expand-on-hover
+          rail
+          :style="{ backgroundColor: '#6FBDC6' }"
+        >
+          <v-list density="compact" nav>
+            <v-list-item
+              link
+              to="/profile"
+              prepend-icon="mdi-face-man-profile"
+              title="My Profile"
+              value="profile"
+            ></v-list-item>
+            <v-list-item
+              link
+              to="/dashboard"
+              prepend-icon="mdi-view-dashboard"
+              title="Dashboard"
+              value="dashboard"
+            ></v-list-item>
+            <v-list-item
+              link
+              to="/admin"
+              prepend-icon="mdi-account-supervisor"
+              title="Admin"
+              value="admin"
+            ></v-list-item>
+            <v-list-item>
+              <v-img class="custom-img-ad" :src="image"></v-img>
+            </v-list-item>
+          </v-list>
+
+          <template v-slot:append>
+            <div class="pa-2">
+              <v-btn
+                @click="logout()"
+                block
+                style="
+                  font-size: xx-small;
+                  background-color: #324b4e;
+                  color: antiquewhite;
+                "
+              >
+                Logout
+              </v-btn>
+            </div>
+          </template>
+        </v-navigation-drawer>
     </v-layout>
   </v-card>
 </template>
@@ -133,6 +184,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      role_user: false,
+      role_admin: false,
       expanded: [],
       image: myImage,
       details: [],
@@ -200,6 +253,34 @@ export default {
     },
   },
   created() {
+    axios
+      .get("http://localhost:80/Traveler/dashboard?role=null", {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.data["user_role"] == "admin") {
+          this.role_admin = true;
+        } else if (response.data["user_role"] == "user") {
+          this.role_user = true;
+        }
+      })
+      .catch((error) => {
+        const error_js = JSON.stringify(error.response.data);
+          const error_parse = JSON.parse(error_js);
+          this.errorMessage = error_parse.error;
+          if (this.errorMessage == "User not logged in!") {
+            document.cookie =
+              "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            this.errorDialogLogin = true;
+          } else {
+            this.errorDialog = true;
+          }
+      });
+
     axios
       .get(
         "http://localhost:80/Traveler/wishlist",
