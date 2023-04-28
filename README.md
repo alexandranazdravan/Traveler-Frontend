@@ -68,68 +68,68 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 ## Search for flights
 <h3 id="cheap-flights">Cheap Flights</h3>
 Options:
-- departure city
-- destination city
-- departure time
-- return time
-- currency
+  - departure city
+  - destination city
+  - departure time
+  - return time
+  - currency
 Response:
-- airline
-- is it lowcost?
-- flight number
-- price
-- departure day + departure time
-- return day + return time
+  - airline
+  - is it lowcost?
+  - flight number
+  - price
+  - departure day + departure time
+  - return day + return time
 <h3 id="direct-flights">Direct Flights</h3>
 Options:
-- departure city
-- destination city
-- departure time
-- return time
-- currency
+  - departure city
+  - destination city
+  - departure time
+  - return time
+  - currency
 Response:
-- airline
-- is it lowcost?
-- flight number
-- price
-- departure day + departure time
-- return day + return time
+  - airline
+  - is it lowcost?
+  - flight number
+  - price
+  - departure day + departure time
+  - return day + return time
 <h3 id="popular-city-directions">Popular City Directions</h3>
 Options:
-- departure city
-- currency
+  - departure city
+  - currency
 Response:
-- airline
-- is it lowcost?
-- flight number
-- price
-- departure day + departure time
-- return day + return time
+  - airline
+  - is it lowcost?
+  - flight number
+  - price
+  - departure day + departure time
+  - return day + return time
 <h3 id="prices-per-month">Prices per Month</h3>
 Options:
-- departure city
-- destination city
-- currency
+  - departure city
+  - destination city
+  - currency
 Response:
-- class
-- price
-- duration (minutes)
-- distance (km)
-- number of changes
-- departure day
-- return day
+  - class
+  - price
+  - duration (minutes)
+  - distance (km)
+  - number of changes
+  - departure day
+  - return day
 <h3 id="popular-airlines">Popular Airlines</h3>
 Options:
-- airline
-- limit
+  - airline
+  - limit
 Response:
-- departure city
-- destination city
-- popularity score
+  - departure city
+  - destination city
+  - popularity score
 
 
 ## Related
-- [Traveler -> Backend](https://github.com/alexandranazdravan/Traveler-Frontend.git) - The backend of the app
+  - [Traveler -> Backend](https://github.com/alexandranazdravan/Traveler-Frontend.git) - The backend of the app
 
 
 ## License
