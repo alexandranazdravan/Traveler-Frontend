@@ -29,13 +29,13 @@
   - A user can change its password and other data (username, email, fullname), including even their avatar
 * Wishlist
    - This way, a user can "keep track" of their favourite flights; they can delete a flight if they are not interested in it anymore
-*  [Searching for flights](#search-for-flights)
+*  Searching for flights
    - A user can make searches based on preferences:
-		-  Cheap Flights
-		-  Direct Flights
-		- Popular City Directions
-		-  Prices per Month
-		-  Popular Airlines
+		-  [Cheap Flights](#cheap-flights)
+		-  [Direct Flights](#direct-flights)
+		-  [Popular City Directions](#popular-city-directions)
+		-  [Prices per Month](#prices-per-month)
+		-  [Popular Airlines](#popular-airlines)
 * Admin
    - This feature is exclusively for app admins. From here, they can view the IATA codes used by the TravelPayouts API and also manage users(edit, delete, update)
 
@@ -48,7 +48,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [N
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
+$ git clone https://github.com/alexandranazdravan/Traveler-Frontend.git
 
 # Go into the repository
 $ cd electron-markdownify
