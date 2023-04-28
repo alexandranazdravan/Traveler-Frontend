@@ -9,7 +9,7 @@
   <br>
 </h1>
 
-<h4 align="center"> A web app built using TravelPayouts API <a href="https://rapidapi.com/Travelpayouts/api/flight-data/details" target="_blank">Electron</a>.</h4>
+<h4 align="center"> A web app built using <a href="https://rapidapi.com/Travelpayouts/api/flight-data/details" target="_blank">TravelPayouts API</a>.</h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -20,7 +20,7 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
+![screenshot](src\assets\logo\dashboard.png)
 
 ## Key Features
 
