@@ -59,9 +59,9 @@ $ yarn add vue-router@4
 $ yarn dev
 ```
 ## IATA Codes
-IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts.
-GET https://api.travelpayouts.com/data/en/cities.json
-GET https://api.travelpayouts.com/data/en/airports.json
+IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts. <br>
+GET https://api.travelpayouts.com/data/en/cities.json  <br>
+GET https://api.travelpayouts.com/data/en/airports.json  <br>
 GET https://api.travelpayouts.com/data/en/airlines.json
 
 
