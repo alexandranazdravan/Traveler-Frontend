@@ -21,10 +21,10 @@
       background-color: #368790;
     "
   >
-    <v-dialog v-model="show" max-width="300px">
+    <v-dialog v-model="showErrorLogin" max-width="300px">
       <template v-slot:activator="{ on }"> </template>
       <v-card>
-        <v-card-text> Invalid credentials </v-card-text>
+        <v-card-text> {{ errorMessage }} </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="showInvalid()">OK</v-btn>
@@ -128,6 +128,7 @@ export default {
       username: "",
       password: "",
       show: false,
+      showErrorLogin: false,
       errorMessage: "",
       errorDialog: false,
       requiredU: (value) => !!value || "This field is required",
@@ -139,7 +140,7 @@ export default {
       this.errorDialog = !this.errorDialog;
     },
     showInvalid() {
-      this.show = !this.show;
+      this.showErrorLogin = !this.showErrorLogin;
     },
     login() {
       this.show = false;
@@ -175,8 +176,11 @@ export default {
           }
         })
         .catch((error) => {
-          this.errorMessage = "Invalid credentials";
-          this.show = true;
+          const error_js = JSON.stringify(error.response.data);
+          const error_parse = JSON.parse(error_js);
+          this.errorMessage = error_parse.error;
+          console.log(this.errorMessage);
+          this.showErrorLogin = true;
         });
     },
   },
