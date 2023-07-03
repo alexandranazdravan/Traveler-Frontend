@@ -195,6 +195,7 @@ export default {
   methods: {
     showContactDialog() {
       this.showSent = !this.showSent;
+
     },
     compose() {
       this.dialogCompose = true;

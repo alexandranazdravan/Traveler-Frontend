@@ -23,27 +23,27 @@
   </v-card>
   <v-img
     src="https://www.perthnow.com.au/stories/perth-misses-out-on-return-to-international-travel/assets/8.gif"
-    style="margin-left: 180vh; margin-top: -25vh"
+    style="margin-left: 170vh; margin-top: -25vh"
   ></v-img>
   <div class="dashboard-page">
-    <v-top-navigation v-model="value" mode="shift" style="margin-left: 11vh">
-      <v-btn @click="getCheapFlights()" style="width: 41vh">
+    <v-top-navigation v-model="value" mode="shift" style="margin-left: 10vh">
+      <v-btn @click="getCheapFlights()" style="width: 39vh">
         <span style="font-size: small">Cheap Flights</span>
       </v-btn>
 
-      <v-btn @click="getDirectFlights()" style="width: 41vh">
+      <v-btn @click="getDirectFlights()" style="width: 39vh">
         <span style="font-size: small">Direct Flights</span>
       </v-btn>
 
-      <v-btn @click="getPopularCityDir()" style="width: 41vh">
+      <v-btn @click="getPopularCityDir()" style="width: 39vh">
         <span style="font-size: small">Popular City Directions</span>
       </v-btn>
 
-      <v-btn @click="getPricesPerMonth()" style="width: 41vh">
+      <v-btn @click="getPricesPerMonth()" style="width: 39vh">
         <span style="font-size: small">Prices for a Month</span>
       </v-btn>
 
-      <v-btn @click="getPopularAirlines()" style="width: 41vh">
+      <v-btn @click="getPopularAirlines()" style="width: 39vh">
         <span style="font-size: small">Popular Airlines</span>
       </v-btn>
     </v-top-navigation>
@@ -421,7 +421,7 @@
               style="max-width: 60vh; margin-top: 6vh; margin-bottom: 5vh"
             >
               <template v-slot:append-item>
-                <div v-intersect="loadMoreData" class="pa-4 teal--text">
+                <div v-intersect="loadMoreData()" class="pa-4 teal--text">
                   Loading more items ...
                 </div>
               </template></v-autocomplete
@@ -645,7 +645,7 @@ export default {
       role_user: false,
       role_admin: false,
       expanded: [],
-      airlines: [],
+      airlines: [{ name: "Blue Air", code: "0B" }],
       cities_headers: [
         {
           align: "start",
@@ -797,15 +797,15 @@ export default {
       })
       .catch((error) => {
         const error_js = JSON.stringify(error.response.data);
-          const error_parse = JSON.parse(error_js);
-          this.errorMessage = error_parse.error;
-          if (this.errorMessage == "User not logged in!") {
-            document.cookie =
-              "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            this.errorDialogLogin = true;
-          } else {
-            this.errorDialog = true;
-          }
+        const error_parse = JSON.parse(error_js);
+        this.errorMessage = error_parse.error;
+        if (this.errorMessage == "User not logged in!") {
+          document.cookie =
+            "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          this.errorDialogLogin = true;
+        } else {
+          this.errorDialog = true;
+        }
       });
   },
   methods: {
@@ -1094,19 +1094,36 @@ export default {
     async loadMoreData() {
       const lastIndex = this.airlines.length - 1;
       const lastItem = this.airlines[lastIndex];
+      console.log(this.airlines);
+      console.log(lastItem);
       if (!lastItem) return;
       const lastCode = lastItem.code;
-      const response = await fetch(
-        `http://localhost:80/Traveler/dashboard?item=airline&page=${
-          this.page + 1
-        }&pageSize=10&lastCode=${lastCode}`
+
+      const cookieValue = document.cookie.match(
+        "(^|;)\\s*" + "loggedin" + "\\s*=\\s*([^;]+)"
       );
-      const data = await response.json();
+      const cookie = cookieValue ? cookieValue.pop() : "";
+      const response = axios.get(`http://localhost:80/Traveler/dashboard`, {
+        params: {
+          item: "airline",
+          page: this.page + 1,
+          pageSize: 10,
+          lastCode: lastCode,
+          cookie: cookie,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+      });
+
+      const data = (await response).data;
 
       const newData = data.filter(
         (item) => !this.airlines.find((existing) => existing.code === item.code)
       );
       this.airlines = this.airlines.concat(newData);
+      console.log(data);
       this.page++;
     },
     toggleFavourite(item) {
